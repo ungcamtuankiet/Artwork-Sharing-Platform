@@ -1,4 +1,7 @@
 using be_artwork_sharing_platform.Core.DbContext;
+using be_artwork_sharing_platform.Core.Entities;
+using be_artwork_sharing_platform.Core.Interfaces;
+using be_artwork_sharing_platform.Core.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -25,11 +28,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 //Dependency Injection
-
-
+builder.Services.AddScoped<ILogService, LogService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //Add Identity
-
+builder.Services
+    .AddIdentity<ApplicationUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 //Config Identity
 builder.Services.Configure<IdentityOptions>(options =>
